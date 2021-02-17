@@ -1,23 +1,16 @@
-from executable import *
-from config_parser import *
-from logs import *
-
-LOGFORMAT = "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
-
+from mutator import *
 
 def main():
-    # r"C:\Users\79313\Documents\repos\APS.L1\exe\sample.exe"
-    # Executable(r"C:\Users\79313\Documents\repos\APS.L1\exe\sample.exe")
-    # config = ConfigParser(r"C:\Users\79313\Desktop\Учеба 10s\АБП (Жуковский)\ЛР 1-2\vuln\\", r"config_5")
     initLogging()
-    config = ConfigParser(r"C:\Users\79313\Documents\repos\APS.L1\exe\\", r"sample_config.txt")
-    config.splitToChunks(b"\x01")
+    cfg = MutatorConfig()
+    cfg.executable_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\sample.exe"
+    cfg.file_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
+    cfg.file_name = r"sample_config.txt"
+    cfg.regex = b"\x01"
+    cfg.timeout = 1
+    cfg.args = ""
 
-    # print('here')
-    # seq = Sequence()
-
-    # print(seq.getBytes())'
-
+    mutator = Mutator(cfg)
 
 if __name__ == '__main__':
     main()
