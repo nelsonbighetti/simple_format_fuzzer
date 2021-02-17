@@ -19,23 +19,23 @@ class Chunk:
         self.type = type
 
 class Sequence:
-    __head__ = None
+    head = None
 
     def addChunk(self, contents, type):
-        if not self.__head__:
-            self.__head__ = Chunk(contents, type)
+        if not self.head:
+            self.head = Chunk(contents, type)
         else:
-            cur = self.__head__
+            cur = self.head
             while cur.next:
                 cur = cur.next
             cur.next = Chunk(contents, type)
 
     def getBytes(self):
-        if not self.__head__:
+        if not self.head:
             return ""
 
-        contents = copy.deepcopy(self.__head__.contents)
-        cur = self.__head__
+        contents = copy.deepcopy(self.head.contents)
+        cur = self.head
         while cur.next:
             cur = cur.next
             contents += cur.contents
