@@ -6,7 +6,6 @@ class ChunkType(Enum):
     SEPARATOR = 1
     CONTENTS = 2
 
-
 class Chunk:
     prev = None
     next = None
@@ -18,7 +17,6 @@ class Chunk:
         self.contents = copy.deepcopy(contents)
         self.size = len(self.contents)
         self.type = type
-
 
 class Sequence:
     __head__ = None

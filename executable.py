@@ -19,22 +19,6 @@ class Output:
     def __ne__(self, other):
         return not self.__eq__(other)
 
-
-class Config:
-    __path__ = None
-    __name__ = None
-    __original_bytes__ = None
-
-    def __init__(self, path, name):
-        self.__path__ = path
-        self.__name__ = name
-        self.readOriginal()
-
-    def readOriginal(self):
-        f = open(self.__path__ + self.__name__, "rb")
-        __original_bytes__ = f.read()
-
-
 class Executable:
     __path__ = None
     __args__ = None
