@@ -31,7 +31,7 @@ class FileParser:
                     logging.critical('Cannot create backup directory')
                     exit(1)
 
-            backup_path = dir_path + self.name + str(int(time.time()))
+            backup_path = dir_path + self.name + "_backup_" + str(int(time.time()))
             try:
                 f = open(backup_path, 'wb')
                 f.write(self.original_bytes)
@@ -58,5 +58,21 @@ class FileParser:
 
         logging.debug('Restored from chunks: %s', str(self.sequence.getBytes()))
 
-    def emplaceOriginalFile(self):
-        print('Implement me')
+    def getContentsChunksCount(self):
+        if not self.sequence:
+            return 0
+        return self.sequence.getContentsChunksCount()
+
+    def __getitem__(self, key):
+        return self.sequence[key]
+
+    def emplaceOriginalFile(self, modified_bytes):
+        try:
+            f = open(self.path + self.name, 'wb')
+            f.write(self.modified_bytes)
+            f.close()
+        except:
+            logging.critical('Cannot emplace original file')
+
+    def getOriginalFileSequence(self):
+        return self.sequence

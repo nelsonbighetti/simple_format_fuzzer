@@ -26,9 +26,9 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-def initLogging():
+def initLogging(level):
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(level)
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(CustomFormatter())

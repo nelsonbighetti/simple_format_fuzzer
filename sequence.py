@@ -18,6 +18,10 @@ class Chunk:
         self.size = len(self.contents)
         self.type = type
 
+    def __str__(self):
+        return str(self.contents)
+
+
 class Sequence:
     head = None
 
@@ -40,3 +44,34 @@ class Sequence:
             cur = cur.next
             contents += cur.contents
         return contents
+
+    def getContentsChunksCount(self):
+        if not self.head:
+            return ""
+
+        count = 0
+        cur = self.head
+        while cur:
+            if cur.type == ChunkType.CONTENTS:
+                count += 1
+            cur = cur.next
+        return count
+
+    def __getitem__(self, key):
+        if not self.head:
+            raise Exception("Empty sequence")
+
+        if key >= self.getContentsChunksCount():
+            raise Exception("Key > contents chunk count")
+
+        count = 0
+        cur = self.head
+        while cur and count < key:
+            cur = cur.next
+            if cur.type == ChunkType.CONTENTS:
+                count += 1
+
+        return cur
+
+    def __str__(self):
+        return str(self.getBytes())

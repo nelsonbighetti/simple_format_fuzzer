@@ -2,6 +2,32 @@ import subprocess
 import copy
 from logs import *
 import threading
+from threading import Lock
+
+
+# class Report:
+#     original_output = None
+#     changed_output = None
+#     file_path = None
+#     workspace = None
+#
+#     def __init__(self, original, changed, path, workspace):
+#         self.original_output = original
+#         self.changed_output = changed
+#         self.file_path = path
+#         self.workspace = workspace
+#
+# class Reporter:
+#     mutex = None
+#     reports = []
+#
+#     def __init__(self):
+#         self.mutex = Lock
+#
+#     def append(self, original, changed, workspace, combination):
+#         self.mutex.acquire()
+#
+#         self.mutex.release()
 
 
 class Output:
@@ -38,10 +64,10 @@ class Executable:
 
     def execute(self):
         def target():
-            logging.debug('Thread started')
+            logging.debug('Executable thread started')
             self.process = subprocess.Popen(self.path + " " + self.args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             result = self.process.communicate()
-            logging.debug('Thread finished')
+            logging.debug('Executable thread finished')
             self.stdout = result[0]
             self.stderr = result[1]
             self.retcode = self.process.returncode
@@ -50,7 +76,7 @@ class Executable:
         thread.start()
         thread.join(self.timeout)
         if thread.is_alive():
-            logging.warning('Killing thread by timeout')
+            logging.warning('Killing executable thread by timeout')
             self.process.terminate()
             thread.join()
 
@@ -59,3 +85,6 @@ class Executable:
     def storeDefaultOutput(self):
         self.default_output = self.execute()
         logging.debug('Original output: %s', str(self.default_output))
+
+    def getOriginalOutput(self):
+        return self.default_output
