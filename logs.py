@@ -2,7 +2,6 @@ import logging
 
 
 class CustomFormatter(logging.Formatter):
-    """Logging Formatter to add colors and count warning / errors"""
     red = "\x1b[31;21m"
     bold_red = "\x1b[31;1m"
     green = "\x1b[32;21m"
