@@ -1,34 +1,23 @@
 from mutator import *
-
-
-def tests():
-    # FIXME
-    print('Fixme')
-    # fp = FileParser(cfg.file_path, cfg.file_name)
-    # fp.splitToChunks(cfg.regex)
-    # print(fp.getBytes())
-    # print(fp.getContentsChunksCount())
-    # print(fp[5])
-
-    # mutator = Mutator(cfg)
-    # mutator.loop()
-
+from mutator_config import *
 
 def main():
-    # initLogging(logging.DEBUG)
-
-    initLogging(logging.CRITICAL)
+    initLogging(logging.WARNING)
     cfg = MutatorConfig()
     cfg.executable_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
     cfg.executable_name = r"sample.exe"
     cfg.file_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
     cfg.file_name = r"sample_config.txt"
     cfg.regex = b";"
-    cfg.timeout = 1
+    cfg.timeout = 10
     cfg.args = ""
-    cfg.threads = 1
+    cfg.threads = 8
     cfg.workspace = r"C:\Users\79313\Documents\repos\APS.L1\exe\workspace\\"
     cfg.mutation_intensity = 50
+    cfg.stop_on_first_crash = False
+    cfg.reports = r"C:\Users\79313\Documents\repos\APS.L1\exe\reports\\"
+    cfg.output_comparison_modes = [ComparisonMode.STDOUT, ComparisonMode.STDERR, ComparisonMode.RETCODE]
+    cfg.max_reports = 10
 
     pool = MutatorsPool(cfg)
     pool.initPool()

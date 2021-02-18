@@ -7,18 +7,6 @@ import threading
 from shutil import copyfile
 import itertools
 
-class MutatorConfig:
-    executable_path = None
-    executable_name = None
-    file_path = None
-    file_name = None
-    regex = None
-    timeout = None
-    args = None
-    threads = None
-    workspace = None
-    mutation_intensity = None
-
 class Mutator:
     cfg = None
     parser = None
@@ -27,15 +15,21 @@ class Mutator:
     num = None
     mutations_pool_sequential = None
     mutations_pool_one_shot = None
+    reporter = None
+    thread_workspace = None
 
-    def __init__(self, config, num, tasks_pool):
+    def __init__(self, reporter, config, num, tasks_pool, thread_workspace):
         logging.debug('Mutator %s initialized', num)
         self.num = num
         self.tasks_pool = copy.deepcopy(tasks_pool)
         self.cfg = config
+        self.reporter = reporter
+        self.thread_workspace = thread_workspace
         self.parser = FileParser(self.cfg.file_path, self.cfg.file_name)
         self.parser.splitToChunks(self.cfg.regex)
-        self.executable = Executable(self.cfg.executable_path + self.cfg.executable_name, self.cfg.timeout,
+        self.executable = Executable(self.cfg.executable_path + self.cfg.executable_name,
+                                     self.cfg.executable_path,
+                                     self.cfg.timeout,
                                      self.cfg.args)
 
         self.mutations_pool_sequential = []
@@ -74,10 +68,23 @@ class Mutator:
                                 self.applyEachMutationToChunk(current_sequence, task[chunk_i], mutations_set_sequential)
                             else:
                                 mutationsMapOneShot[mutation_one_shot](current_sequence[chunk_i])
-                        print(current_sequence)
+
+                        self.parser.emplaceOriginalFile(current_sequence)
+                        output = self.executable.execute()
+                        if not self.executable.isMatchOriginalOutput(output):
+                            logging.debug('Found output inconsistency [Thr: %s]', self.num)
+                            self.reporter.writeReport(original_sequence,
+                                                      output,
+                                                      self.cfg.workspace + r'\\' + self.thread_workspace,
+                                                      mutation_types_set,
+                                                      mutations_set_sequential,
+                                                      mutation_one_shot,
+                                                      self.cfg,
+                                                      current_sequence
+                                                      )
 
 
-def mutatorWorker(cfg, num, tasks_pool):
+def mutatorWorker(reporter, cfg, num, tasks_pool):
     config = copy.deepcopy(cfg)
     thread_workspace = "ws_" + str(int(time.time())) + "_thr_" + str(num)
     try:
@@ -107,19 +114,21 @@ def mutatorWorker(cfg, num, tasks_pool):
     config.executable_path = config.workspace + thread_workspace + r'\\'
     config.file_path = config.workspace + thread_workspace + r'\\'
 
-    mutator = Mutator(config, num, tasks_pool)
+    mutator = Mutator(reporter, config, num, tasks_pool, thread_workspace)
     mutator.loop()
 
 
 class MutatorsPool:
     cfg = None
     workersThreads = None
+    reporter = None
 
     def __init__(self, config):
         logging.debug('Mutators pool initialized')
         self.cfg = config
         self.parser = FileParser(self.cfg.file_path, self.cfg.file_name, False)
         self.parser.splitToChunks(self.cfg.regex)
+        self.reporter = Reporter(self.cfg)
 
     def initPool(self):
         chunks_count = self.parser.getContentsChunksCount()
@@ -141,7 +150,8 @@ class MutatorsPool:
 
         self.workersThreads = []
         for i in range(len(tasks_pool)):
-            self.workersThreads.append(threading.Thread(target=mutatorWorker, args=(self.cfg, i, tasks_pool[i])))
+            self.workersThreads.append(
+                threading.Thread(target=mutatorWorker, args=(self.reporter, self.cfg, i, tasks_pool[i])))
 
         for thr in self.workersThreads:
             thr.start()

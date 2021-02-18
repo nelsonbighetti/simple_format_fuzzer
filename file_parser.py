@@ -66,13 +66,13 @@ class FileParser:
     def __getitem__(self, key):
         return self.sequence[key]
 
-    def emplaceOriginalFile(self, modified_bytes):
+    def emplaceOriginalFile(self, modified_sequence):
         try:
             f = open(self.path + self.name, 'wb')
-            f.write(self.modified_bytes)
+            f.write(modified_sequence.getBytes())
             f.close()
         except:
-            logging.critical('Cannot emplace original file')
+            logging.critical('Cannot emplace original file (path : %s)', self.path + self.name)
 
     def getOriginalFileSequence(self):
         return self.sequence

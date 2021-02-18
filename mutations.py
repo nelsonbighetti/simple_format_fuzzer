@@ -1,6 +1,3 @@
-from enum import Enum
-import copy
-import sequence
 import random
 
 
