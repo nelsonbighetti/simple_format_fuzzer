@@ -30,6 +30,7 @@ def getComparisonModeStr(mode):
 class MutatorConfig:
     executable_path = None
     executable_name = None
+    additional_files = None
     file_path = None
     file_name = None
     regex = None

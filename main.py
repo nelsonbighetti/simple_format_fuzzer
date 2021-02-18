@@ -5,9 +5,10 @@ def main():
     initLogging(logging.WARNING)
     cfg = MutatorConfig()
     cfg.executable_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
-    cfg.executable_name = r"sample.exe"
+    cfg.executable_name = r"vuln6.exe"
+    cfg.additional_files = ["func.dll"]
     cfg.file_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
-    cfg.file_name = r"sample_config.txt"
+    cfg.file_name = r"config_5"
     cfg.regex = b";"
     cfg.timeout = 10
     cfg.args = ""

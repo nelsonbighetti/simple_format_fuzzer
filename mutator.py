@@ -106,6 +106,15 @@ def mutatorWorker(reporter, cfg, num, tasks_pool):
         exit(1)
 
     try:
+        for f in cfg.additional_files:
+            file_path = config.executable_path + f
+            newpath = config.workspace + thread_workspace + r'\\' + f
+            copyfile(file_path, newpath)
+    except:
+        logging.critical('Cannot copy additional files')
+        exit(1)
+
+    try:
         copyfile(configPathOriginal, configPathCopy)
     except:
         logging.critical('Cannot copy input file to workspace')
