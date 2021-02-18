@@ -5,7 +5,7 @@ from itertools import *
 from random import shuffle
 import threading
 from shutil import copyfile
-
+import itertools
 
 class MutatorConfig:
     executable_path = None
@@ -61,26 +61,20 @@ class Mutator:
         logging.debug('Mutator %s loop started', self.num)
         original_sequence = copy.deepcopy(self.parser.getOriginalFileSequence())
 
-        # Only sequential for each chunk
         for task in self.tasks_pool:
-            current_sequence = copy.deepcopy(original_sequence)
             for mutations_set_sequential in self.mutations_pool_sequential:
-                for chunk_id in task:
-                    self.applyEachMutationToChunk(current_sequence, chunk_id, mutations_set_sequential)
-                    print(current_sequence)
-
-        # Only one-shot for each chunk
-        for task in self.tasks_pool:
-            current_sequence = copy.deepcopy(original_sequence)
-            for mutation in self.mutations_pool_one_shot:
-                for chunk_id in task:
-                    mutationsMapOneShot[mutation](current_sequence[chunk_id])
-                    print(current_sequence)
-
-        print('here')
-        # Individual approach for each chunk
-        # current_state = copy.deepcopy(original_file)
-        # for task in self.tasks_pool:
+                for mutation_one_shot in self.mutations_pool_one_shot:
+                    mutation_types_list = list(mutationTypesMap)
+                    mutations_types_pool = [list(p) for p in
+                                            [p for p in itertools.product(mutation_types_list, repeat=len(task))]]
+                    for mutation_types_set in mutations_types_pool:
+                        current_sequence = copy.deepcopy(original_sequence)
+                        for chunk_i in range(len(task)):
+                            if mutation_types_set[chunk_i] == "sequential":
+                                self.applyEachMutationToChunk(current_sequence, task[chunk_i], mutations_set_sequential)
+                            else:
+                                mutationsMapOneShot[mutation_one_shot](current_sequence[chunk_i])
+                        print(current_sequence)
 
 
 def mutatorWorker(cfg, num, tasks_pool):
