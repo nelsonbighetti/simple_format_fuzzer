@@ -17,6 +17,14 @@ class ComparisonMode(Enum):
     STDERR = 2
     RETCODE = 3
 
+def getComparisonModeStr(mode):
+    if mode == ComparisonMode.STDOUT:
+        return 'STDOUT'
+    if mode == ComparisonMode.STDERR:
+        return 'STDERR'
+    if mode == ComparisonMode.RETCODE:
+        return 'RETCODE'
+    return 'UNKNOWN'
 
 @singleton
 class MutatorConfig:
@@ -36,6 +44,8 @@ class MutatorConfig:
     max_reports = None
 
     def __str__(self):
+        comparison_modes_str = str([getComparisonModeStr(m) for m in self.output_comparison_modes])
+
         return str({"executable_path": self.executable_path,
                     "executable_name": self.executable_name,
                     "file_path": self.file_path,
@@ -48,4 +58,4 @@ class MutatorConfig:
                     "mutation_intensity": self.mutation_intensity,
                     "stop_on_first_crash": self.stop_on_first_crash,
                     "reports": self.reports,
-                    "output_comparison_modes": self.output_comparison_modes})
+                    "output_comparison_modes": comparison_modes_str})

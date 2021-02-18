@@ -134,7 +134,7 @@ class Output:
         self.comparison_modes = MutatorConfig().output_comparison_modes
 
     def __str__(self):
-        return str([self.stdout, self.stderr, self.retcode])
+        return str({"STDOUT": self.stdout, "STDERR": self.stderr, "RETCODE": self.retcode})
 
     def __eq__(self, other):
         if not self.comparison_modes:

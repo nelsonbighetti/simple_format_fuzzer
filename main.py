@@ -16,7 +16,8 @@ def main():
     cfg.mutation_intensity = 50
     cfg.stop_on_first_crash = False
     cfg.reports = r"C:\Users\79313\Documents\repos\APS.L1\exe\reports\\"
-    cfg.output_comparison_modes = [ComparisonMode.STDOUT, ComparisonMode.STDERR, ComparisonMode.RETCODE]
+    # cfg.output_comparison_modes = [ComparisonMode.STDOUT, ComparisonMode.STDERR, ComparisonMode.RETCODE]
+    cfg.output_comparison_modes = [ComparisonMode.RETCODE]
     cfg.max_reports = 10
 
     pool = MutatorsPool(cfg)
