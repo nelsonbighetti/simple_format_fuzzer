@@ -79,7 +79,7 @@ class Reporter:
         self.reports_count += 1
         modified_file_path = self.files_path + cfg.file_name + "_modified_" + str(self.reports_count)
         header = ["Original output",
-                  "Changed output",
+                  "Output with modified input file",
                   "Thread workspace",
                   "Mutation types set",
                   "Mutations set sequential",

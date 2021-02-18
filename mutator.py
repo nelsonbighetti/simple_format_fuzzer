@@ -73,7 +73,7 @@ class Mutator:
                         output = self.executable.execute()
                         if not self.executable.isMatchOriginalOutput(output):
                             logging.debug('Found output inconsistency [Thr: %s]', self.num)
-                            self.reporter.writeReport(original_sequence,
+                            self.reporter.writeReport(self.executable.getOriginalOutput(),
                                                       output,
                                                       self.cfg.workspace + r'\\' + self.thread_workspace,
                                                       mutation_types_set,
