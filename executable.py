@@ -24,10 +24,6 @@ class htmlTable:
     @staticmethod
     def create(header, rows):
         code = "<html>" + htmlTable.getTableStyle() + "<table><tr>"
-        # for h in header:
-        #    code += "<th>" + str(h) + "</th>"
-        # code += "</tr>"
-
         code += "<th>Parameter</th><th>Details</th></tr>"
 
         for row in rows:
