@@ -67,7 +67,7 @@ class Mutator:
                             if mutation_types_set[chunk_i] == "sequential":
                                 self.applyEachMutationToChunk(current_sequence, task[chunk_i], mutations_set_sequential)
                             else:
-                                mutationsMapOneShot[mutation_one_shot](current_sequence[chunk_i])
+                                mutationsMapOneShot[mutation_one_shot](current_sequence[task[chunk_i]])
 
                         self.parser.emplaceOriginalFile(current_sequence)
                         output = self.executable.execute()

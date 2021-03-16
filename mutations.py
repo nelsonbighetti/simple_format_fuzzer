@@ -7,9 +7,9 @@ def addRandomBytesRight(chunk_in, N):
     chunk_in.contents += right
     return chunk_in
 
-def add5482q(chunk_in, N):
-    right = bytearray(0xFF for _ in range(5482))
-    chunk_in.size = 5482
+def replaceWith5000zeros(chunk_in):
+    right = bytearray(0xFF for _ in range(5000))
+    chunk_in.size = 5000
     chunk_in.contents = right
     return chunk_in
 
@@ -55,17 +55,17 @@ mutationsMapSequential = {
     # "addRandomBytesRight": addRandomBytesRight,
     # "addRandomBytesLeft": addRandomBytesLeft,
     # "addFFBytesLeft": addFFBytesLeft,
-    # "addFFBytesRight": addFFBytesRight
-    "add5482q": add5482q
+    "addFFBytesRight": addFFBytesRight
 }
 
 mutationsMapOneShot = {
-    "changeBytesToZeros": changeBytesToZeros,
-    "changeBytesToFF": changeBytesToFF,
-    "replaceWithOneZeroByte": replaceWithSingleZeroByte
+    # "changeBytesToZeros": changeBytesToZeros,
+    # "changeBytesToFF": changeBytesToFF,
+    # "replaceWithOneZeroByte": replaceWithSingleZeroByte
+    "replaceWith5000zeros": replaceWith5000zeros
 }
 
 mutationTypesMap = {
-    "sequential": mutationsMapSequential  # ,
-    #"oneshot": mutationsMapOneShot
+    # "sequential": mutationsMapSequential,
+    "oneshot": mutationsMapOneShot
 }
