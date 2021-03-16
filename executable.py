@@ -12,26 +12,27 @@ class htmlTable:
     @staticmethod
     def getTableStyle():
         code = "<style>" \
-               "table { border: solid 1px #DDEEEE; border-collapse: collapse; " \
+               "table { border: solid 1px #DDEEEE; border-collapse: collapse; width: 100%; table-layout: fixed;" \
                "border-spacing: 0; font: normal 13px Arial, sans-serif;}" \
                "th { background-color: #DDEFEF; border: solid 1px #DDEEEE; color: #336B6B; padding: " \
                "10px; text-align: left; text-shadow: 1px 1px 1px #fff; }" \
-               "td { border: solid 1px #DDEEEE; color: #333; padding: 10px; text-shadow: 1px 1px 1px #fff;}" \
+               "td { border: solid 1px #DDEEEE; color: #333; padding: 10px; text-shadow: 1px 1px 1px #fff; overflow: scroll; " \
+               "overflow-y: auto; overflow-x: auto;}" \
                "</style>"
         return code
 
     @staticmethod
     def create(header, rows):
         code = "<html>" + htmlTable.getTableStyle() + "<table><tr>"
-        for h in header:
-            code += "<th>" + str(h) + "</th>"
-        code += "</tr>"
+        # for h in header:
+        #    code += "<th>" + str(h) + "</th>"
+        # code += "</tr>"
+
+        code += "<th>Parameter</th><th>Details</th></tr>"
 
         for row in rows:
-            code += "<tr>"
-            for column in row:
-                code += "<td>" + str(column) + "</td>"
-            code += "</tr>"
+            for i in range(len(row)):
+                code += "<tr><td>" + str(header[i]) + "</td><td>" + str(row[i]) + "</td></tr>"
 
         code += "</table></html>"
         return code

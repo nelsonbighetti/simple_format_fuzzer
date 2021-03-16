@@ -9,7 +9,7 @@ def main():
     cfg.additional_files = ["func.dll"]
     cfg.file_path = r"C:\Users\79313\Documents\repos\APS.L1\exe\\"
     cfg.file_name = r"config_5"
-    cfg.regex = b";"
+    cfg.regex = b"\x84|start"
     cfg.timeout = 10
     cfg.args = ""
     cfg.threads = 8
@@ -19,8 +19,7 @@ def main():
     cfg.reports = r"C:\Users\79313\Documents\repos\APS.L1\exe\reports\\"
     # cfg.output_comparison_modes = [ComparisonMode.STDOUT, ComparisonMode.STDERR, ComparisonMode.RETCODE]
     cfg.output_comparison_modes = [ComparisonMode.RETCODE]
-    cfg.max_reports = 10
-
+    cfg.max_reports = 1000
     pool = MutatorsPool(cfg)
     pool.initPool()
 
