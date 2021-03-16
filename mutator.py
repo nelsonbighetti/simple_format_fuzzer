@@ -157,6 +157,7 @@ class MutatorsPool:
                 hi = len(variants)
             tasks_pool.append(variants[lo:hi])
 
+        tasks_pool = [[[1]]]
         self.workersThreads = []
         for i in range(len(tasks_pool)):
             self.workersThreads.append(
